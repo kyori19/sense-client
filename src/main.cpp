@@ -1,8 +1,10 @@
 #include <Arduino.h>
+#include <Screen.h>
+
 void setup() {
-// write your initialization code here
+    Screen::setup();
 }
 
 void loop() {
-// write your code here
+    Screen::loop();
 }
