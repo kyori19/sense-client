@@ -62,6 +62,8 @@ namespace Screen {
                 return 'X';
             case ApiServer::CONNECTED:
                 return 'O';
+            case ApiServer::WAITING:
+                return '?';
             default:
                 return '!';
         }

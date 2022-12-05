@@ -14,6 +14,8 @@ namespace ApiServer {
         NOT_CONNECTED,
         CONNECTED,
         FAILED,
+        WAITING,
+        ERROR,
     };
 
     Status status();

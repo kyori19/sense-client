@@ -1,10 +1,13 @@
 #include <ESP8266WiFi.h>
+#include <TimeLib.h>
 #include "ApiServer.h"
 
 namespace ApiServer {
     Status status_v = NOT_CONNECTED;
     WiFiClient client;
     unsigned long last_tried_at = 0;
+    time_t last_sent_at = 0;
+    char data[1024];
 
     Status status() {
         return status_v;
@@ -31,13 +34,43 @@ namespace ApiServer {
                 }
 
                 status_v = CONNECTED;
-                client.print("hello from client");
                 break;
             }
-            case CONNECTED: {
+            case CONNECTED:
+            case ERROR: {
                 if (!client.connected()) {
                     status_v = NOT_CONNECTED;
+                    client.stop();
+                    break;
                 }
+
+                if (now() - last_sent_at < 1) {
+                    break;
+                }
+
+                last_sent_at = now();
+
+                sprintf(data, "{\"ts\": %lld}", now());
+                client.print(data);
+                status_v = WAITING;
+            }
+            case WAITING: {
+                if (now() - last_sent_at > 0) {
+                    status_v = ERROR;
+                    break;
+                }
+
+                memset(data, 0, 1024);
+                if (!client.read(data, 1024)) {
+                    break;
+                }
+
+                if (strcmp(data, "OK") != 0) {
+                    status_v = ERROR;
+                    break;
+                }
+
+                status_v = CONNECTED;
             }
         }
     }
