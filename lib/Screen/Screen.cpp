@@ -1,5 +1,6 @@
 #include <TimeLib.h>
 #include <ESP8266WiFi.h>
+#include "MotionDetect.h"
 #include "Screen.h"
 #include "TimeSync.h"
 
@@ -48,6 +49,12 @@ namespace Screen {
         update_text(POS_CLOCK, result);
     }
 
+    void set_md() {
+        char result[10];
+        sprintf(result, "MD: %-5s", MotionDetect::current() ? "true" : "false");
+        update_text(POS_MD, result);
+    }
+
     char wifi_status_indicator() {
         switch (WiFi.status()) {
             case WL_CONNECTED: {
@@ -87,6 +94,7 @@ namespace Screen {
 
     void loop() {
         set_clock();
+        set_md();
         set_wifi();
         set_dot();
 
