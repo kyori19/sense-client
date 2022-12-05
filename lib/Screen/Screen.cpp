@@ -1,3 +1,4 @@
+#include <TimeLib.h>
 #include "Screen.h"
 
 namespace Screen {
@@ -16,8 +17,24 @@ namespace Screen {
         }
     }
 
+    void update_text(int x, int y, const char c) {
+        lines[y][x] = c;
+    }
+
+    void update_text(int x, int y, const String& text) {
+        for (auto & c : text) {
+            lines[y][x++] = c;
+        }
+    }
+
+    void set_clock() {
+        char result[12];
+        sprintf(result, "%02d/%02d %02d:%02d", month(), day(), hour(), minute());
+        update_text(POS_CLOCK, result);
+    }
+
     void set_dot() {
-        lines[POS_DOT] = millis() % 1000 < 500 ? '.' : ' ';
+        update_text(POS_DOT, millis() % 1000 < 500 ? '.' : ' ');
     }
 
     void render_lines() {
@@ -28,6 +45,7 @@ namespace Screen {
     }
 
     void loop() {
+        set_clock();
         set_dot();
 
         display.clearDisplay();

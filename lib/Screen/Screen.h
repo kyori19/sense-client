@@ -4,7 +4,7 @@
 #include "Adafruit_SSD1306.h"
 
 // The display has 21x8 chars to display
-// _____________________
+// __________MM/dd_hh:mm
 // _____________________
 // _____________________
 // _____________________
@@ -13,8 +13,8 @@
 // _____________________
 // ____________________.
 
-#define POS_GENERATE(x, y) y][x
-#define POS_DOT POS_GENERATE(20, 7)
+#define POS_CLOCK 10, 0
+#define POS_DOT 20, 7
 
 namespace Screen {
     void setup();
