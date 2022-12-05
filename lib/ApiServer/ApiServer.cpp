@@ -1,6 +1,7 @@
 #include <ESP8266WiFi.h>
 #include <TimeLib.h>
 #include "ApiServer.h"
+#include "MotionDetect.h"
 
 namespace ApiServer {
     Status status_v = NOT_CONNECTED;
@@ -11,6 +12,10 @@ namespace ApiServer {
 
     Status status() {
         return status_v;
+    }
+
+    void createData() {
+        sprintf(data, R"({"ts": %lld, "md": %s})", now(), MotionDetect::current() ? "true" : "false");
     }
 
     void loop() {
@@ -50,7 +55,7 @@ namespace ApiServer {
 
                 last_sent_at = now();
 
-                sprintf(data, "{\"ts\": %lld}", now());
+                createData();
                 client.print(data);
                 status_v = WAITING;
             }
