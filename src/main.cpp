@@ -1,6 +1,7 @@
 #include <Arduino.h>
 #include <Screen.h>
 #include <Net.h>
+#include <TimeSync.h>
 
 void setup() {
     Screen::setup();
@@ -9,4 +10,5 @@ void setup() {
 
 void loop() {
     Screen::loop();
+    TimeSync::loop();
 }

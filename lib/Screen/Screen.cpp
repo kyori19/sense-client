@@ -1,6 +1,7 @@
 #include <TimeLib.h>
 #include <ESP8266WiFi.h>
 #include "Screen.h"
+#include "TimeSync.h"
 
 namespace Screen {
     Adafruit_SSD1306 display(128, 64, &Wire, 2); // NOLINT(cppcoreguidelines-interfaces-global-init)
@@ -28,9 +29,22 @@ namespace Screen {
         }
     }
 
+    char time_status_indicator() {
+        switch (TimeSync::status()) {
+            case TimeSync::NOT_SYNCED:
+                return 'X';
+            case TimeSync::SYNCING:
+                return '?';
+            case TimeSync::SYNCED:
+                return 'O';
+            default:
+                return '!';
+        }
+    }
+
     void set_clock() {
-        char result[12];
-        sprintf(result, "%02d/%02d %02d:%02d", month(), day(), hour(), minute());
+        char result[14];
+        sprintf(result, "%02d/%02d %02d:%02d %c", month(), day(), hour(), minute(), time_status_indicator());
         update_text(POS_CLOCK, result);
     }
 
