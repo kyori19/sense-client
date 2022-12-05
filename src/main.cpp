@@ -1,4 +1,5 @@
 #include <Arduino.h>
+#include <ApiServer.h>
 #include <Screen.h>
 #include <MotionDetect.h>
 #include <Net.h>
@@ -13,4 +14,5 @@ void setup() {
 void loop() {
     Screen::loop();
     TimeSync::loop();
+    ApiServer::loop();
 }

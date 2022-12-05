@@ -1,5 +1,6 @@
 #include <TimeLib.h>
 #include <ESP8266WiFi.h>
+#include "ApiServer.h"
 #include "MotionDetect.h"
 #include "Screen.h"
 #include "TimeSync.h"
@@ -55,6 +56,21 @@ namespace Screen {
         update_text(POS_MD, result);
     }
 
+    char server_status_indicator() {
+        switch (ApiServer::status()) {
+            case ApiServer::NOT_CONNECTED:
+                return 'X';
+            case ApiServer::CONNECTED:
+                return 'O';
+            default:
+                return '!';
+        }
+    }
+
+    void set_server() {
+        update_text(POS_SERVER, server_status_indicator());
+    }
+
     char wifi_status_indicator() {
         switch (WiFi.status()) {
             case WL_CONNECTED: {
@@ -95,6 +111,7 @@ namespace Screen {
     void loop() {
         set_clock();
         set_md();
+        set_server();
         set_wifi();
         set_dot();
 
