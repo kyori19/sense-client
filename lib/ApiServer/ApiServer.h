@@ -19,6 +19,7 @@ namespace ApiServer {
     };
 
     Status status();
+    const char *message();
     void loop();
 }
 

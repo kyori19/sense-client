@@ -11,9 +11,14 @@ namespace ApiServer {
     unsigned long last_tried_at = 0;
     time_t last_sent_at = 0;
     char data[1024];
+    char message_v[20];
 
     Status status() {
         return status_v;
+    }
+
+    const char *message() {
+        return message_v;
     }
 
     void createData() {
@@ -76,7 +81,21 @@ namespace ApiServer {
                     break;
                 }
 
-                if (strcmp(data, "OK") != 0) {
+                StaticJsonDocument<32> json;
+                DeserializationError err = deserializeJson(json, data, 1024);
+                if (err) {
+                    status_v = ERROR;
+                    sprintf(message_v, "%-19s", err.c_str());
+                    break;
+                }
+
+                if (json.containsKey("message")) {
+                    sprintf(message_v, "%-19s", json["message"].as<const char *>());
+                } else {
+                    message_v[0] = '\0';
+                }
+
+                if (!json["ok"].as<bool>()) {
                     status_v = ERROR;
                     break;
                 }

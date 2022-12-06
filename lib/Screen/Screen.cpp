@@ -77,7 +77,9 @@ namespace Screen {
     }
 
     void set_server() {
-        update_text(POS_SERVER, server_status_indicator());
+        char result[22];
+        sprintf(result, "%c %-19s", server_status_indicator(), ApiServer::message());
+        update_text(POS_SERVER, result);
     }
 
     char wifi_status_indicator() {
