@@ -3,6 +3,7 @@
 #include <TimeLib.h>
 #include "ApiServer.h"
 #include "Beep.h"
+#include "BrightSense.h"
 #include "MotionDetect.h"
 #include "IDSwitch.h"
 
@@ -23,10 +24,11 @@ namespace ApiServer {
     }
 
     void createData() {
-        StaticJsonDocument<48> json;
+        StaticJsonDocument<64> json;
         json["id"] = IDSwitch::current();
         json["ts"] = now();
         json["md"] = MotionDetect::current();
+        json["bright"] = BrightSense::current();
         serializeJson(json, data);
     }
 

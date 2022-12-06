@@ -1,6 +1,7 @@
 #include <TimeLib.h>
 #include <ESP8266WiFi.h>
 #include "ApiServer.h"
+#include "BrightSense.h"
 #include "MotionDetect.h"
 #include "Screen.h"
 #include "TimeSync.h"
@@ -63,6 +64,12 @@ namespace Screen {
         update_text(POS_MD, result);
     }
 
+    void set_bright() {
+        char result[18];
+        sprintf(result, "Bright: %5d mlx", BrightSense::current());
+        update_text(POS_BRIGHT, result);
+    }
+
     char server_status_indicator() {
         switch (ApiServer::status()) {
             case ApiServer::NOT_CONNECTED:
@@ -123,6 +130,7 @@ namespace Screen {
         set_id();
         set_clock();
         set_md();
+        set_bright();
         set_server();
         set_wifi();
         set_dot();

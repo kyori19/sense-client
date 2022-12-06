@@ -8,7 +8,7 @@
 // _____________________
 // _____________________
 // MD:<stat>____________
-// _____________________
+// Bright: 12345 mlx____
 // _____________________
 // O <-----message----->
 // O <-----SSID----->__.
@@ -16,6 +16,7 @@
 #define POS_ID 0, 0
 #define POS_CLOCK 8, 0
 #define POS_MD 0, 3
+#define POS_BRIGHT 0, 4
 #define POS_SERVER 0, 6
 #define POS_WIFI 0, 7
 #define POS_DOT 20, 7
