@@ -4,7 +4,7 @@
 #include "Adafruit_SSD1306.h"
 
 // The display has 21x8 chars to display
-// ________MM/dd_hh:mm O
+// [3]_____MM/dd_hh:mm O
 // _____________________
 // _____________________
 // MD:<stat>____________
@@ -13,6 +13,7 @@
 // O____________________
 // O <-----SSID----->__.
 
+#define POS_ID 0, 0
 #define POS_CLOCK 8, 0
 #define POS_MD 0, 3
 #define POS_SERVER 0, 6

@@ -1,7 +1,9 @@
+#include <ArduinoJson.h>
 #include <ESP8266WiFi.h>
 #include <TimeLib.h>
 #include "ApiServer.h"
 #include "MotionDetect.h"
+#include "IDSwitch.h"
 
 namespace ApiServer {
     Status status_v = NOT_CONNECTED;
@@ -15,7 +17,11 @@ namespace ApiServer {
     }
 
     void createData() {
-        sprintf(data, R"({"ts": %lld, "md": %s})", now(), MotionDetect::current() ? "true" : "false");
+        StaticJsonDocument<48> json;
+        json["id"] = IDSwitch::current();
+        json["ts"] = now();
+        json["md"] = MotionDetect::current();
+        serializeJson(json, data);
     }
 
     void loop() {

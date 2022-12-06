@@ -1,5 +1,6 @@
 #include <Arduino.h>
 #include <ApiServer.h>
+#include <IDSwitch.h>
 #include <Screen.h>
 #include <MotionDetect.h>
 #include <Net.h>
@@ -9,6 +10,7 @@ void setup() {
     Screen::setup();
     Net::setup();
     MotionDetect::setup();
+    IDSwitch::setup();
 }
 
 void loop() {

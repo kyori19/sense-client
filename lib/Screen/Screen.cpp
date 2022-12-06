@@ -4,6 +4,7 @@
 #include "MotionDetect.h"
 #include "Screen.h"
 #include "TimeSync.h"
+#include "IDSwitch.h"
 
 namespace Screen {
     Adafruit_SSD1306 display(128, 64, &Wire, 2); // NOLINT(cppcoreguidelines-interfaces-global-init)
@@ -29,6 +30,12 @@ namespace Screen {
         for (auto & c : text) {
             lines[y][x++] = c;
         }
+    }
+
+    void set_id() {
+        char result[4];
+        sprintf(result, "[%1d]", IDSwitch::current());
+        update_text(POS_ID, result);
     }
 
     char time_status_indicator() {
@@ -111,6 +118,7 @@ namespace Screen {
     }
 
     void loop() {
+        set_id();
         set_clock();
         set_md();
         set_server();
