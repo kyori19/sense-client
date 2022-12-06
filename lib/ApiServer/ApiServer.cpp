@@ -2,6 +2,7 @@
 #include <ESP8266WiFi.h>
 #include <TimeLib.h>
 #include "ApiServer.h"
+#include "Beep.h"
 #include "MotionDetect.h"
 #include "IDSwitch.h"
 
@@ -58,6 +59,19 @@ namespace ApiServer {
                     status_v = NOT_CONNECTED;
                     client.stop();
                     break;
+                }
+
+                memset(data, 0, 1024);
+                if (client.read(data, 1024)) {
+                    StaticJsonDocument<32> json;
+                    DeserializationError err = deserializeJson(json, data, 1024);
+
+                    if (err) {
+                        status_v = ERROR;
+                        sprintf(message_v, "%-19s", err.c_str());
+                    } else if (json.containsKey("beep")) {
+                        Beep::offer(500);
+                    }
                 }
 
                 if (now() - last_sent_at < 1) {
